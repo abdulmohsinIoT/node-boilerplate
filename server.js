@@ -2,21 +2,25 @@ const Cluster = require('cluster');
 const Application = require('./src/app');
 const numCPUs = require('os').cpus().length;
 
-if (Cluster.isMaster) {
-    console.log(`Master ${process.pid} is running`);
+// if (Cluster.isMaster) {
+//     console.log(`Master ${process.pid} is running`);
   
-    // Fork workers.
-    for (let i = 0; i < numCPUs; i++) {
-        Cluster.fork();
-    }
+//     // Fork workers.
+//     for (let i = 0; i < numCPUs; i++) {
+//         Cluster.fork();
+//     }
   
-    Cluster.on('exit', (worker, code, signal) => {
-      console.log(`worker ${worker.process.pid} died`);
-    });
-  } else {
-    Application.bootstrap(process);
+//     Cluster.on('exit', (worker, code, signal) => {
+//       console.log(`worker ${worker.process.pid} died`);
+//     });
+//   } else {
+//     Application.bootstrap(process);
   
-    console.log(`Worker ${process.pid} started`);
-  }
+//     console.log(`Worker ${process.pid} started`);
+//   }
+
+Application.bootstrap(process);
+  
+console.log(`Worker ${process.pid} started`);
 
 

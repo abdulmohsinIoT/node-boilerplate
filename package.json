@@ -46,7 +46,7 @@
   "dependencies": {
     "@hapi/boom": "^9.1.0",
     "@hapi/joi": "^17.1.1",
-    "async-redis": "^1.1.7",
+    "async-redis": "^2.0.0",
     "awilix": "^4.2.1",
     "bluebird": "^3.5.3",
     "fastify": "^3.2.1",
@@ -74,6 +74,6 @@
     "eslint-config-airbnb-base": "^13.1.0",
     "eslint-plugin-import": "^2.16.0",
     "jest": "^26.6.3",
-    "lint-staged": "^8.1.5"
+    "lint-staged": "^11.1.2"
   }
 }
