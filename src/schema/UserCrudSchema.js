@@ -1,14 +1,20 @@
 function UserCrudSchema(opts) {
 
-    const { 
-        UserCrudHandlers,
+    const {
+        userCrudHandlers,
+        Joi
     } = opts;
 
     const getUsers = ({ fastify }) => {
         return {
             method: 'GET',
-            url: '/getUsers',
-            handler: UserCrudHandlers.getUsers
+            url: '/getUsers/:id',
+            schema: {
+                params: Joi.object().keys({
+                    id: Joi.number().required(),
+                }).options({allowUnknown: true})
+            },
+            handler: userCrudHandlers.getUsers
         }
     }
 
@@ -16,19 +22,36 @@ function UserCrudSchema(opts) {
         return {
             method: 'POST',
             url: '/addUser',
-            handler: (request, reply) => {
-                return { count: 100 }
-            }
+            schema: {
+                body: Joi.object().keys({
+                    firstname: Joi.string().required(),
+                    lastname: Joi.string().required(),
+                    gender: Joi.string().required(),
+                    address: Joi.string().required(),
+                    cellno: Joi.string().required(),
+                }).options({allowUnknown: true})
+            },
+            handler: userCrudHandlers.addUser
         }
     }
 
-    const editUser = ({ fastify }) => {
+    const updateUser = ({ fastify }) => {
         return {
             method: 'PUT',
-            url: '/editUser/:id',
-            handler: (request, reply) => {
-                return { count: 100 }
-            }
+            url: '/updateUser/:id',
+            schema: {
+                params: Joi.object().keys({
+                    id: Joi.number().required(),
+                }).options({allowUnknown: true}),
+                body: Joi.object().keys({
+                    firstname: Joi.string().required(),
+                    lastname: Joi.string().required(),
+                    gender: Joi.string().required(),
+                    address: Joi.string().required(),
+                    cellno: Joi.number().required(),
+                }).options({allowUnknown: true})
+            },
+            handler: userCrudHandlers.updateUser
         }
     }
 
@@ -36,16 +59,19 @@ function UserCrudSchema(opts) {
         return {
             method: 'DELETE',
             url: '/deleteUser/:id',
-            handler: (request, reply) => {
-                return { count: 100 }
-            }
+            schema: {
+                params: Joi.object().keys({
+                    id: Joi.number().required(),
+                }).options({allowUnknown: true})
+            },
+            handler: userCrudHandlers.deleteUser
         }
     }
 
     return {
         getUsers,
         addUser,
-        editUser,
+        updateUser,
         deleteUser,
     }
 }

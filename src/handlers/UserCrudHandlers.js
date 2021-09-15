@@ -1,48 +1,55 @@
 function UserCrudHandlers(opts) {
 
-    const { logger, svcUsers } = opts;
+    const { logger, svcUserCurd } = opts;
 
-    const getUsers = async function getUsers(request, reply) {
-        console.log("UserCRUDHandlers > getUsers >");
+    const getUsers = async (request, reply) =>{
+        const id = request.params.id;
+        const userGet = await svcUserCurd.userGet({id});
 
-        logger.info('Inside Non Fat Arrow Handler >');
-
-        reply.send({ ok: true });
+        reply.send({ ok: true, userGet });
     }
 
-    const anotherTest = async (request, reply) => {
-        console.log("UserCRUDHandlers > anotherTest >");
+    const addUser = async (request, reply) =>{
+        const body = request.body;
 
-        logger.info('Inside Fat Arrow Handler >');
-
-        const userAccount = await svcUsers.userTransaction({
-            username: 'taskuser',
-            password: 'task1234',
-            email: 'user@task.com',
-            enc_salt: '123456abcde',
-            number:'923463312526'
+        const userAdded = await svcUserCurd.userCreate({
+            firstname: body.firstname,
+            lastname: body.lastname,
+            gender: body.gender,
+            address: body.address,
+            cellno: body.cellno
         });
+        reply.send({ ok: true ,userAdded });
+    }
 
-        const user = await svcUsers.userAuth({
-            username: 'admin',
-            password: 'admin1234',
-        })
+    const updateUser = async (request, reply) =>{
+        const body = request.body;
+        const id = request.params.id;
 
-        console.log("User Object >", user);
-
-        const bindExample = await svcUsers.modifyUsersModel({
-            username: 'test',
-            password: 'test',
+        const userUpdate = await svcUserCurd.userUpdate({
+            firstname: body.firstname,
+            lastname: body.lastname,
+            gender: body.gender,
+            address: body.address,
+            cellno: body.cellno,
+            id: id
         });
+        reply.send({ ok: true ,userUpdate });
+    }
 
-        console.log("bindExample Object >", bindExample);
+    const deleteUser = async (request, reply) =>{
+        const id = request.params.id;
+        const userDelete = await svcUserCurd.userDelete({id});
 
-        reply.send({ ok: true, bindExample, userAccount, user });
-    };
+        reply.send({ ok: true, userDelete });
+    }
+
 
     return {
         getUsers,
-        anotherTest,
+        addUser,
+        updateUser,
+        deleteUser,
     }
 }
 
